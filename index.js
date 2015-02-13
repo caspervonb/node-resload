@@ -19,18 +19,18 @@ function load(type, path, callback) {
 
   try {
     var loader = require('resload-' + type);
+
+    loader(path, function(error, value) {
+      if (error) {
+        return callback(error);
+      }
+
+      cache[key] = value;
+      callback(null, value);
+    });
   } catch (error) {
     return callback(error);
   }
-
-  loader(path, function(error, value) {
-    if (error) {
-      return callback(error);
-    }
-
-    cache[key] = value;
-    callback(null, value);
-  });
 }
 
 module.exports.cwd = cwd;
